@@ -17,16 +17,17 @@ URLPath turns raw URLs into first-class objects that behave like `pathlib` paths
 - Keep callers inside a known root using `JailedURL` guards.
 - Accept familiar inputs: strings, bytes, `urllib.parse` results, `webob.Request`, and other `PathLike` objects.
 
-## Installation
+## How to install
 
 ```bash
 pip install urlpath
 ```
 ### Dependencies
 
-- **Requests** - required for HTTP verbs.
-- **JMESPath** - optional, enables filtered `get_json` responses.
-- **WebOb** - optional, allows constructing URLs directly from `webob.Request` instances.
+* **Python 3.9–3.14**
+* **[Requests](http://docs.python-requests.org/)** - required for HTTP verbs.
+* **[JMESPath](https://pypi.org/project/jmespath/)** - optional, enables filtered `get_json` responses.
+* **[WebOb](http://webob.org/)** - optional, allows constructing URLs directly from `webob.Request` instances.
 
 ## Quick start
 
