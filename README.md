@@ -186,7 +186,7 @@ URL("http://example.com/name").with_name("\u65e5\u672c\u8a9e/\u540d\u524d")
 
 ## Testing the examples
 
-You can find additional examples in the doctest script located at [docttests.md](./doctests.md).
+You can find additional examples in the doctest script located at [docttests.md](tests/doctests.md).
 
 See the [test suite](tests/test_url.py) for more usage patterns and edge cases.
 

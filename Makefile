@@ -4,7 +4,7 @@
 # Use copy mode to avoid filesystem reflink issues
 export UV_LINK_MODE = copy
 
-DOC_TESTS = doctests.md
+DOC_TESTS = tests/doctests.md
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
