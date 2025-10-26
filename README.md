@@ -128,21 +128,24 @@ ages = URL("https://api.example.com/users").get_json(keys=expr)
 
 ```python
 root = URL("https://www.example.com/app/")
-current = root.jailed / "path/to/content"
+jailed_url = root.jailed / "path/to/content"
 
-assert str(current / "appendix") == "https://www.example.com/app/path/to/content/appendix"
-assert str((current / "../../root").resolve()) == "https://www.example.com/app/root"
-assert str(current / "https://malicious.test") == "https://www.example.com/app/"
+assert str(jailed_url / "appendix") == "https://www.example.com/app/path/to/content/appendix"
+assert (jailed_url / "/new_root").resolve().path == "/app/new_root"
+assert str(jailed_url / "https://malicious.test") == "https://www.example.com/app/"
 ```
 
-You can also wrap an incoming `webob.Request` to lock navigation to the request's application URL:
+You can also wrap an incoming `webob.Request` to mirror the application's mount point:
 
 ```python
 import webob
+from JailedURL
 
-request = webob.Request.blank("/docs/page", base_url="https://docs.example.com")
-jailed = URL(request).jailed
-assert str(jailed.chroot) == "https://docs.example.com/"
+request = webob.Request.blank("/docs/page", environ={"SCRIPT_NAME": "/app/root"}, base_url="https://docs.example.com")
+jailed = JailedURL(request)
+assert str(jailed.chroot) == "https://docs.example.com/app/root"
+assert str(jailed) == "https://docs.example.com/app/root/docs/page"
+
 ```
 
 ## Works with familiar URL sources
@@ -154,7 +157,7 @@ from pathlib import PurePosixPath
 from urllib.parse import urlsplit
 
 URL(urlsplit("https://example.com/from-split"))
-URL(PurePosixPath("path/segment"))            # usable when joining onto an existing URL
+URL(PurePosixPath("path/segment"))            # usable when joining onto a local path
 URL(b"https://example.com/from-bytes")
 URL(webob.Request.blank("/resource", base_url="https://example.com"))
 ```
@@ -165,11 +168,14 @@ IDNs and percent-encoding are handled for you:
 
 ```python
 url = URL("http://www.xn--alliancefranaise-npb.nu/")
-assert url.hostname == "www.alliancefran\u00e7aise.nu"
+url.hostname # "www.alliancefran\u00e7aise.nu"
 
-encoded = URL("http://example.com/name").with_name("\u65e5\u672c\u8a9e/\u540d\u524d")
-assert str(encoded) == "http://example.com/%E6%97%A5%E6%9C%AC%E8%AA%9E%2F%E5%90%8D%E5%89%8D"
+URL("http://example.com/name").with_name("\u65e5\u672c\u8a9e/\u540d\u524d")
+# str(encoded) == "http://example.com/%E6%97%A5%E6%9C%AC%E8%AA%9E%2F%E5%90%8D%E5%89%8D"
 ```
+
+## More Examples
+You can find additional examples for more complex scenarios in [docttests.md](./doctests.md).
 
 ## Dependencies
 
