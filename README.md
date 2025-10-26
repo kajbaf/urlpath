@@ -133,24 +133,28 @@ ages = URL("https://api.example.com/users").get_json(keys=expr)
 
 ```python
 root = URL("https://www.example.com/app/")
-jailed_url = root.jailed / "path/to/content"
+current = root.jailed / "path/to/content"
 
-assert str(jailed_url / "appendix") == "https://www.example.com/app/path/to/content/appendix"
-assert (jailed_url / "/new_root").resolve().path == "/app/new_root"
-assert str(jailed_url / "https://malicious.test") == "https://www.example.com/app/"
+assert str(current / "appendix") == "https://www.example.com/app/path/to/content/appendix"
+assert str((current / "/root").resolve()) == "https://www.example.com/app/root"
+assert str(current / "https://malicious.test") == "https://www.example.com/app/"
 ```
 
 You can also wrap an incoming `webob.Request` to mirror the application's mount point:
 
 ```python
 import webob
-from JailedURL
+from urlpath import JailedURL
 
-request = webob.Request.blank("/docs/page", environ={"SCRIPT_NAME": "/app/root"}, base_url="https://docs.example.com")
+request = webob.Request.blank(
+    "/docs/page",
+    base_url="https://docs.example.com",
+    environ={"SCRIPT_NAME": "/knowledge-base"},
+)
+
 jailed = JailedURL(request)
-assert str(jailed.chroot) == "https://docs.example.com/app/root"
-assert str(jailed) == "https://docs.example.com/app/root/docs/page"
-
+assert str(jailed) == "https://docs.example.com/knowledge-base/docs/page"
+assert str(jailed.chroot) == "https://docs.example.com/knowledge-base"
 ```
 
 ## Works with familiar URL sources
@@ -181,9 +185,9 @@ URL("http://example.com/name").with_name("\u65e5\u672c\u8a9e/\u540d\u524d")
 
 ## Testing the examples
 
-* You can find additional examples in the doctest script located at [docttests.md](./doctests.md).
+You can find additional examples in the doctest script located at [docttests.md](./doctests.md).
 
-* See the [test suite](tests/test_url.py) for more usage patterns and edge cases.
+See the [test suite](tests/test_url.py) for more usage patterns and edge cases.
 
-* Run `make test` to execute tests and ensure the
+Run `make test` to execute tests and ensure the
 published examples stay up to date.
