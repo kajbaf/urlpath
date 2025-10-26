@@ -1,3 +1,9 @@
+# Doctest examples
+
+These executable snippets back `make test-doctest`. They preserve the legacy
+examples from the original README so we can regression-test them with
+`pytest --markdown-docs`.
+
 ## Install all requirements
 
 ```bash

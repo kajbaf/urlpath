@@ -22,6 +22,11 @@ URLPath turns raw URLs into first-class objects that behave like `pathlib` paths
 ```bash
 pip install urlpath
 ```
+### Dependencies
+
+- **Requests** - required for HTTP verbs.
+- **JMESPath** - optional, enables filtered `get_json` responses.
+- **WebOb** - optional, allows constructing URLs directly from `webob.Request` instances.
 
 ## Quick start
 
@@ -174,13 +179,11 @@ URL("http://example.com/name").with_name("\u65e5\u672c\u8a9e/\u540d\u524d")
 # str(encoded) == "http://example.com/%E6%97%A5%E6%9C%AC%E8%AA%9E%2F%E5%90%8D%E5%89%8D"
 ```
 
-## More Examples
-You can find additional examples for more complex scenarios in [docttests.md](./doctests.md).
+## Testing the examples
 
-## Dependencies
+* You can find additional examples in the doctest script located at [docttests.md](./doctests.md).
 
-- **Requests** - required for HTTP verbs.
-- **JMESPath** - optional, enables filtered `get_json` responses.
-- **WebOb** - optional, allows constructing URLs directly from `webob.Request` instances.
+* See the [test suite](tests/test_url.py) for more usage patterns and edge cases.
 
-See the test suite (`tests/test_url.py`) for additional usage patterns and edge cases.
+* Run `make test` to execute tests and ensure the
+published examples stay up to date.
