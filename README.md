@@ -190,5 +190,4 @@ You can find additional examples in the doctest script located at [docttests.md]
 
 See the [test suite](tests/test_url.py) for more usage patterns and edge cases.
 
-Run `make test` to execute tests and ensure the
-published examples stay up to date.
+Run `make test` to execute tests and ensure the published examples stay up to date.
